@@ -9,6 +9,12 @@ plugins {
 
 kotlin {
     android()
+    val onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
+    if (onPhone) {
+        iosArm64("ios")
+    } else {
+        iosX64("ios")
+    }
     ios {
         binaries {
             framework {
@@ -83,3 +89,9 @@ val packForXcode by tasks.creating(Sync::class) {
 }
 
 tasks.getByName("build").dependsOn(packForXcode)
+
+sqldelight {
+    database("AppDatabase") {
+        packageName = "com.astirtrotter.kmmexample.shared.cache"
+    }
+}
